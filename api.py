@@ -67,5 +67,5 @@ def upload_predict():
     return render_template("index.html", prediction=0, image_file=None)
 
 if __name__ == "__main__":
-    MODEL = keras.models.load_model('/model_8752.h5')
+    MODEL = keras.models.load_model('/opt/render/project/src/.venv/lib/python3.7/site-packages/flask/model_8752.h5')
     app.run(port=12000, debug=True)
