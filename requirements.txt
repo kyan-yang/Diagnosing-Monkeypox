@@ -4,5 +4,4 @@ numpy
 Pillow
 pytest-shutil
 scikit-image
-tempfile
 tensorflow
