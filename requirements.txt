@@ -46,7 +46,7 @@ jupyter-server==1.21.0
 jupyter_client==7.4.2
 jupyterlab-pygments==0.2.2
 jupyterlab-widgets==3.0.3
-keras==2.11.0
+keras==2.12.0rc0
 lazy_loader==0.1
 libclang==14.0.6
 Markdown==3.4.1
