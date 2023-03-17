@@ -2,7 +2,7 @@ Flask
 keras
 numpy
 Pillow
-shutil
+pytest-shutil
 scikit-image
 tempfile
 tensorflow
