@@ -5,4 +5,3 @@ numpy
 Pillow
 pytest-shutil
 scikit-image
-tensorflow

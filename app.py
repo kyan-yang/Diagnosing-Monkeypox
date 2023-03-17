@@ -5,8 +5,7 @@ from flask import request
 from flask import render_template
 
 import numpy as np
-import tensorflow
-from tensorflow import keras
+import keras
 from skimage.io import imread
 from PIL import Image
 
@@ -68,4 +67,4 @@ def upload_predict():
 
 if __name__ == "__main__":
     MODEL = keras.models.load_model('/model_8752.h5')
-    app.run(debug=True)
+    app.run(port=process.env.PORT, debug=True)
