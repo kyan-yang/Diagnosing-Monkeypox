@@ -67,4 +67,4 @@ def upload_predict():
 
 if __name__ == "__main__":
     MODEL = keras.models.load_model('/model_8752.h5')
-    app.run(port=process.env.PORT, debug=True)
+    app.run(debug=True)

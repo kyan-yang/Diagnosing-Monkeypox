@@ -1,7 +1,0 @@
-Flask
-gunicorn
-keras
-numpy
-Pillow
-pytest-shutil
-scikit-image
