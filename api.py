@@ -12,7 +12,7 @@ from PIL import Image
 
 
 app = Flask(__name__)
-UPLOAD_FOLDER = "C:/Users/Kyan/Documents/mp_sci_fair/code/static"
+UPLOAD_FOLDER = "https://github.com/kyan-yang/Diagnosing-Monkeypox/tree/main/static"
 MODEL = None
 
 def read_image(filepath):
@@ -56,5 +56,5 @@ def upload_predict():
     return render_template("index.html", prediction=0, image_file=None)
 
 if __name__ == "__main__":
-    MODEL = keras.models.load_model('C:/Users/Kyan/Documents/mp_sci_fair/code/model_8752.h5')
+    MODEL = keras.models.load_model('https://github.com/kyan-yang/Diagnosing-Monkeypox/tree/main/model_8752.h5')
     app.run(port=12000, debug=True)
