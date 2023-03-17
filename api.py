@@ -5,7 +5,6 @@ from flask import request
 from flask import render_template
 
 import numpy as np
-import tensorflow as tf
 from tensorflow import keras
 from skimage.io import imread
 from PIL import Image
