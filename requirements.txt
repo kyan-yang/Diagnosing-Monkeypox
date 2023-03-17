@@ -97,7 +97,7 @@ stack-data==0.5.1
 tensorboard==2.11.0
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
-tensorflow==2.11.0
+tensorflow==2.12.0rc0
 tensorflow-estimator==2.11.0
 tensorflow-intel==0.0.1
 tensorflow-io-gcs-filesystem==0.29.0
