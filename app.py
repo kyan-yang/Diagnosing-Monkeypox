@@ -103,4 +103,5 @@ def upload_predict():
 
 if __name__ == "__main__":
     MODEL = import_model('model_8781.hdf5')
+    MODEL.compile(optimizer=keras.optimizers.Adam(epsilon=0.01), loss='binary_crossentropy', metrics=['binary_accuracy'])
     app.run(port=12000, debug=True)
