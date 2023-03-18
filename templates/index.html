@@ -24,9 +24,10 @@
       <button class="btn btn-lg btn-primary btn-block" type="submit">Predict</button>
       <br>
       <br>
-      {% if image_loc %}
+      {% if image_data %}
         <img class="mb-4" src="data:image/jpeg;base64,{{image_data}}" alt="" width="224" height="224">
         <h3 class="h3 mb-3 font-weight-normal">Diagnosis: {{prediction}}</h3>
+        <h4 class="h4 mb-3 font-weight-normal">Confidence: {{confidence}}%</h3>
       {%endif%}
       <p class="mt-5 mb-3 text-muted">By: Kyan Yang and Sara Becker</p>
     </form>

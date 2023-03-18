@@ -4,18 +4,45 @@ from flask import Flask
 from flask import request
 from flask import render_template
 
-import numpy as np
-import keras
-from skimage.io import imread
-from PIL import Image
-
 import tempfile
 import shutil
 import base64
 import io
 
+import numpy as np
+import math
+import tensorflow as tf
+from tensorflow import keras
+from keras import Sequential
+from keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization
+from keras.regularizers import l2
+
+from skimage.io import imread
+from PIL import Image
 app = Flask(__name__)
 MODEL = None
+
+def sigmoid(x):
+  return 1/(1 + math.exp(-x))
+
+def import_model(filepath):
+    model = Sequential([
+        Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(224,224, 3)),
+        MaxPooling2D((2, 2)),
+        Dropout(0.12),
+        Conv2D(32, (3, 3), padding='same', activation='relu'),
+        MaxPooling2D((2, 2)),
+        Dropout(0.12),
+        Conv2D(64, (3, 3), padding='same', activation='relu', kernel_regularizer=l2(l=0.001)),
+        MaxPooling2D((2, 2)),
+        Dropout(0.12),
+        Flatten(),
+        Dense(128, activation='relu', kernel_regularizer=l2(l=0.007)),
+        Dropout(0.5),
+        Dense(1),
+    ])
+    model.load_weights(filepath)
+    return model
 
 def read_image(image_path):
     arr = np.zeros((1,224,224,3))
@@ -55,16 +82,25 @@ def upload_predict():
             im.save(data, "JPEG")
             encoded_img_data = base64.b64encode(data.getvalue())
             pred = predict(image_location, MODEL)
-            print(pred)
-            diagnosis = "Negative"
-            if bool(pred[0,0]):
-                diagnosis = "Positive"
             img.close()
             im.close()
             shutil.rmtree(dir)
-            return render_template("index.html", prediction=diagnosis, image_data=encoded_img_data.decode('utf-8'))
+            conf = 0
+            if (pred > 0):
+                pred = math.log(pred, 7)
+                pred = sigmoid(pred)
+                conf = (5*pred-1)/4
+            else:
+                pred = -math.log(abs(pred), 7)
+                pred = sigmoid(pred)
+                conf = (0.2-pred)/0.2
+            conf = int(conf*100)
+            diagnosis = "Negative"
+            if pred > 0.2:
+                diagnosis = "Positive"
+            return render_template("index.html", prediction=diagnosis, confidence=conf, image_data=encoded_img_data.decode('utf-8'))
     return render_template("index.html", prediction=0, image_file=None)
 
 if __name__ == "__main__":
-    MODEL = keras.models.load_model('/model_8752.h5')
-    app.run(debug=True)
+    MODEL = import_model('model_8781.hdf5')
+    app.run(port=12000, debug=True)
