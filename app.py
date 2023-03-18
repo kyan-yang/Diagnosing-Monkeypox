@@ -20,7 +20,6 @@ from keras.regularizers import l2
 from skimage.io import imread
 from PIL import Image
 app = Flask(__name__)
-MODEL = None
 
 def sigmoid(x):
   return 1/(1 + math.exp(-x))
@@ -81,27 +80,25 @@ def upload_predict():
             data = io.BytesIO()
             im.save(data, "JPEG")
             encoded_img_data = base64.b64encode(data.getvalue())
+            MODEL = import_model('model_8781.hdf5')
+            MODEL.compile(optimizer=keras.optimizers.Adam(epsilon=0.01), loss='binary_crossentropy', metrics=['binary_accuracy'])
             pred = predict(image_location, MODEL)
             img.close()
             im.close()
             shutil.rmtree(dir)
             conf = 0
-            if (pred > 0):
-                pred = math.log(pred, 7)
-                pred = sigmoid(pred)
-                conf = (5*pred-1)/4
-            else:
-                pred = -math.log(abs(pred), 7)
-                pred = sigmoid(pred)
-                conf = (0.2-pred)/0.2
-            conf = int(conf*100)
-            diagnosis = "Negative"
-            if pred > 0.2:
+            pred = pred/500
+            pred = sigmoid(pred)
+            diagnosis = "n/a"
+            if (pred > 0.2):
                 diagnosis = "Positive"
+                conf = 0.625*pred + 0.375
+            else:
+                diagnosis = "Negative"
+                conf = 1 - 2.5*pred
+            conf = int(conf*100)
             return render_template("index.html", prediction=diagnosis, confidence=conf, image_data=encoded_img_data.decode('utf-8'))
     return render_template("index.html", prediction=0, image_file=None)
 
 if __name__ == "__main__":
-    MODEL = import_model('model_8781.hdf5')
-    MODEL.compile(optimizer=keras.optimizers.Adam(epsilon=0.01), loss='binary_crossentropy', metrics=['binary_accuracy'])
-    app.run(port=12000, debug=True)
+    app.run(debug=True)
