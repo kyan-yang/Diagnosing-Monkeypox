@@ -14,7 +14,7 @@ import math
 import tensorflow as tf
 from tensorflow import keras
 from keras import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization
+from keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense
 from keras.regularizers import l2
 
 from skimage.io import imread
@@ -80,7 +80,7 @@ def upload_predict():
             data = io.BytesIO()
             im.save(data, "JPEG")
             encoded_img_data = base64.b64encode(data.getvalue())
-            MODEL = import_model('model_8781.hdf5')
+            MODEL = import_model('/home/Kyan/mysite/model_8781.hdf5')
             MODEL.compile(optimizer=keras.optimizers.Adam(epsilon=0.01), loss='binary_crossentropy', metrics=['binary_accuracy'])
             pred = predict(image_location, MODEL)
             img.close()
